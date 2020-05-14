@@ -6,18 +6,23 @@ class App extends Component {
 		super();
 		this.state = {
 			data: {},
+			states: {},
 			slug: "us"
 		};
 	}
+	componentDidMount() {
+		this.getCases(this.state.slug);
+	}
 
-
-	getCases = (slug) => {
-		fetch(`https://api.covid19api.com/dayone/country/${slug}`)
+	getCases = async (slug) => {
+		await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
 			.then(resp => resp.json())
 			.then(data => {
 				this.setState({ data });
 			})
+		await console.log("download complete")
 	}
+
 
 	topTest = () => {
 		console.log(this.state)
@@ -37,11 +42,12 @@ class App extends Component {
 					</button> <br/>
 					main<br/>
 					<button
-						onClick={() => this.getCases(this.state.slug)}
+						onClick={() => console.log("no test set up")}
 					>
 						-!-
 					</button>
 				</main>
+
 			</div>
 		);
 	}
