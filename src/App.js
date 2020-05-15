@@ -7,7 +7,7 @@ class App extends Component {
 		this.state = {
 			data: {},
 			states: {},
-			slug: "us"
+			slug: "china"
 		};
 	}
 	componentDidMount() {
@@ -19,7 +19,8 @@ class App extends Component {
 			.then(data => {
 				this.setState({ data });
 			})
-		await console.log("download complete")
+		this.sortDataToStates(this.state.data)
+		console.log("download complete")
 	}
 
 
@@ -56,17 +57,20 @@ class App extends Component {
 		this.setState({ states: newStates })
 	}
 
-	addDataToStates = (data) => {
-		const { provinceInStates, countyInState } = this
-		for (const entry in data) {
-			if (provinceInStates(data[entry])) {
-				if (countyInState(data[entry])) {
-					this.addEntryToState(data[entry])
-				} else {
-					this.createCountyInState(data[entry])
-				}
+	sortDataToStates = (data) => {
+		const {
+			provinceInStates, countyInState, addEntryToState, 
+			createCountyInState, createEntryInState 
+		} = this;
+		for (const info in data) {
+			const entry = data[info];
+			if (provinceInStates(entry)) {
+				countyInState(entry) ? 
+					addEntryToState(entry) 
+				: 
+					createCountyInState(entry);
 			} else {
-				this.createEntryInState(data[entry]);
+				createEntryInState(entry);
 			}
 		}
 	}
@@ -101,9 +105,9 @@ class App extends Component {
 					<br/>
 					
 					<button
-						onClick={() => this.addDataToStates(this.state.data)}
+						onClick={() => console.log("test not set up")}
 					>
-						ADD DATA TO STATES
+						TEST BUTTON
 					</button>
 					
 				</main>
