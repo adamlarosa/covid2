@@ -8,12 +8,14 @@ class App extends Component {
 			data: {},
 			states: {},
 			routes: {},
+			slugs: {},
 			slug: "us"
 		};
 	}
 	componentDidMount() {
 		this.getCases(this.state.slug);
 		this.getRoutes();
+		this.getCountrySlugs();
 	}
 	getCases = async (slug) => {
 		await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
@@ -31,6 +33,14 @@ class App extends Component {
 				this.setState({ routes })
 			})
 		console.log("routes fetched")
+	}
+	getCountrySlugs = async () => {
+		await fetch(`https://api.covid19api.com/countries`)
+			.then(resp => resp.json())
+			.then(slugs => {
+				this.setState({ slugs })
+			})
+		console.log("Country names downloaded")
 	}
 
 // begin helper functions for sortDataToStates()
