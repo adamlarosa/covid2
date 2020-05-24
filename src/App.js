@@ -7,11 +7,13 @@ class App extends Component {
 		this.state = {
 			data: {},
 			states: {},
+			routes: {},
 			slug: "us"
 		};
 	}
 	componentDidMount() {
 		this.getCases(this.state.slug);
+		this.getRoutes();
 	}
 	getCases = async (slug) => {
 		await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
@@ -21,6 +23,14 @@ class App extends Component {
 			})
 		this.sortDataToStates(this.state.data)
 		console.log("download complete")
+	}
+	getRoutes = async () => {
+		await fetch(`https://api.covid19api.com`)
+			.then(resp => resp.json())
+			.then(routes => {
+				this.setState({ routes })
+			})
+		console.log("routes fetched")
 	}
 
 // begin helper functions for sortDataToStates()
@@ -63,6 +73,7 @@ class App extends Component {
 		
 	    for (const info in data) {
 		const entry = data[info];
+		
 		if (provinceInStates(entry)) {
 		    countyInState(entry) ? 
 			addEntryToState(entry) 
