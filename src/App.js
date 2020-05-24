@@ -126,7 +126,10 @@ class App extends Component {
 
 			{Object.keys(this.state.slugs).map(c => {
 				return (
-				<div>{this.state.slugs[c].Country}</div>
+				<div>
+					{this.state.slugs[c].Country} - {this.state.slugs[c].Slug}
+				
+				</div>
 				)
 			})}
 
