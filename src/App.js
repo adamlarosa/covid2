@@ -7,7 +7,7 @@ class App extends Component {
 		this.state = {
 			data: {},
 			states: {},
-			slug: "china"
+			slug: "us"
 		};
 	}
 	componentDidMount() {
@@ -23,7 +23,7 @@ class App extends Component {
 		console.log("download complete")
 	}
 
-
+// begin helper functions for sortDataToStates()
 	provinceInStates = (entry) => {
 		const { states } = this.state
 		return Object.keys(states).includes(entry.Province)
@@ -33,13 +33,11 @@ class App extends Component {
 		const { states } = this.state
 		return Object.keys(states[entry["Province"]]).includes(entry.City)
 	}
-
 	addEntryToState = (entry) => {
 		const { Province, City } = entry;
 		let newStates = this.state.states
 		newStates[Province][City].push(entry) 
 	}
-
 	createEntryInState = (entry) => {
 		const { Province, City } = entry
 		let newStates = this.state.states
@@ -48,7 +46,6 @@ class App extends Component {
 		newStates[Province][City].push(entry);
 		this.setState({ states: newStates })
 	}
-
 	createCountyInState = (entry) => {
 		const { Province, City } = entry;
 		let newStates = this.state.states;
@@ -56,64 +53,60 @@ class App extends Component {
 		newStates[Province][City].push(entry)
 		this.setState({ states: newStates })
 	}
+// end helper functions
 
 	sortDataToStates = (data) => {
-		const {
-			provinceInStates, countyInState, addEntryToState, 
-			createCountyInState, createEntryInState 
-		} = this;
-		for (const info in data) {
-			const entry = data[info];
-			if (provinceInStates(entry)) {
-				countyInState(entry) ? 
-					addEntryToState(entry) 
-				: 
-					createCountyInState(entry);
-			} else {
-				createEntryInState(entry);
-			}
+	    const {
+		provinceInStates, countyInState, addEntryToState, 
+		createCountyInState, createEntryInState 
+	    } = this;
+		
+	    for (const info in data) {
+		const entry = data[info];
+		if (provinceInStates(entry)) {
+		    countyInState(entry) ? 
+			addEntryToState(entry) 
+		    : 
+			createCountyInState(entry);
+		} else {
+		    createEntryInState(entry);
 		}
+	    }
 	}
 
 
-
-
-
-
-
-
-	topTest = () => {
+	showState = () => {
 		console.log(this.state)
 	}
 	render() {
-		return (
-			<div className="App">
-				<header className="App-header">
-					header
-				</header>
+	    return (
+		<div className="App">
+		    <header className="App-header">
+			header
+		    </header>
 
-				<main className="App-main">
+		    <main className="App-main">
 
-					<button
-						onClick={() => this.topTest()}
-					>
-						SHOWSTATE
-					</button> 
+			<button
+			    onClick={ () => this.showState() }
+			>
+			    SHOWSTATE
+			</button> 
 					
-					<br/>
-					main
-					<br/>
+			<br/>
+			    main
+			<br/>
 					
-					<button
-						onClick={() => console.log("test not set up")}
-					>
-						TEST BUTTON
-					</button>
+			<button
+			    onClick={ () => console.log("test not set up") }
+			>
+			    TEST BUTTON
+			</button>
 					
-				</main>
+		    </main>
 
-			</div>
-		);
+		</div>
+	    );
 	}
 }
 export default App;
