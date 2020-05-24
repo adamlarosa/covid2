@@ -123,7 +123,13 @@ class App extends Component {
 			>
 			    TEST BUTTON
 			</button>
-					
+
+			{Object.keys(this.state.slugs).map(c => {
+				return (
+				<div>{this.state.slugs[c].Country}</div>
+				)
+			})}
+
 		    </main>
 
 		</div>
