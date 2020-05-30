@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './sortDataToStates'
 
 class App extends Component {
 	constructor() {
@@ -43,57 +44,7 @@ class App extends Component {
 		console.log("Country names downloaded")
 	}
 
-// begin helper functions for sortDataToStates()
-	provinceInStates = (entry) => {
-		const { states } = this.state
-		return Object.keys(states).includes(entry.Province)
-	}
 
-	countyInState = (entry) => {
-		const { states } = this.state
-		return Object.keys(states[entry["Province"]]).includes(entry.City)
-	}
-	addEntryToState = (entry) => {
-		const { Province, City } = entry;
-		let newStates = this.state.states
-		newStates[Province][City].push(entry) 
-	}
-	createEntryInState = (entry) => {
-		const { Province, City } = entry
-		let newStates = this.state.states
-		newStates[Province] = {}
-		newStates[Province][City] = []
-		newStates[Province][City].push(entry);
-		this.setState({ states: newStates })
-	}
-	createCountyInState = (entry) => {
-		const { Province, City } = entry;
-		let newStates = this.state.states;
-		newStates[Province][City] = []
-		newStates[Province][City].push(entry)
-		this.setState({ states: newStates })
-	}
-// end helper functions
-
-	sortDataToStates = (data) => {
-	    const {
-		provinceInStates, countyInState, addEntryToState, 
-		createCountyInState, createEntryInState 
-	    } = this;
-		
-	    for (const info in data) {
-		const entry = data[info];
-		
-		if (provinceInStates(entry)) {
-		    countyInState(entry) ? 
-			addEntryToState(entry) 
-		    : 
-			createCountyInState(entry);
-		} else {
-		    createEntryInState(entry);
-		}
-	    }
-	}
 
 
 	showState = () => {
