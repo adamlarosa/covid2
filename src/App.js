@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import './sortDataToStates'
+import sortDataToStates from './sortDataToStates'
 
 class App extends Component {
 	constructor() {
@@ -24,7 +24,7 @@ class App extends Component {
 			.then(data => {
 				this.setState({ data });
 			})
-		this.sortDataToStates(this.state.data)
+		sortDataToStates(this.state.data)
 		console.log("download complete")
 	}
 	getRoutes = async () => {
@@ -43,9 +43,6 @@ class App extends Component {
 			})
 		console.log("Country names downloaded")
 	}
-
-
-
 
 	showState = () => {
 		console.log(this.state)

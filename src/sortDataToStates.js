@@ -37,16 +37,16 @@ const sortDataToStates = (data) => {
     // } = this;
     
     for (const info in data) {
-    const entry = data[info];
-    
-    if (provinceInStates(entry)) {
-        countyInState(entry) ? 
-        addEntryToState(entry) 
-        : 
-        createCountyInState(entry);
-    } else {
-        createEntryInState(entry);
-    }
+        const entry = data[info];
+        
+        if (provinceInStates(entry)) {
+            countyInState(entry) ? 
+                addEntryToState(entry) 
+            : 
+                createCountyInState(entry);
+        } else {
+            createEntryInState(entry);
+        }
     }
 }
 export default sortDataToStates
