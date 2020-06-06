@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import sortDataToStates from './sortDataToStates'
 
 class App extends Component {
 	constructor() {
@@ -24,9 +23,9 @@ class App extends Component {
 			.then(data => {
 				this.setState({ data });
 			})
-		sortDataToStates(this.state.data)
+		this.sortDataToStates(this.state.data)
 		console.log("download complete")
-	}
+	}   
 	getRoutes = async () => {
 		await fetch(`https://api.covid19api.com`)
 			.then(resp => resp.json())
@@ -44,6 +43,77 @@ class App extends Component {
 		console.log("Country names downloaded")
 	}
 
+// begin helpers
+	provinceInStates = (entry) => {
+		const { states } = this.state
+		return Object.keys(states).includes(entry.Province)
+	}
+	countyInState = (entry) => {
+		const { states } = this.state
+		return Object.keys(states[entry["Province"]]).includes(entry.City)
+	}
+	addEntryToState = (entry) => {
+		const { Province, City } = entry;
+		let newStates = this.state.states
+		newStates[Province][City].push(entry) 
+	}
+	createEntryInState = (entry) => {
+		const { Province, City } = entry
+		let newStates = this.state.states
+		newStates[Province] = {}
+		newStates[Province][City] = []
+		newStates[Province][City].push(entry);
+		this.setState({ states: newStates })
+	}
+	createCountyInState = (entry) => {
+		const { Province, City } = entry;
+		let newStates = this.state.states;
+		newStates[Province][City] = []
+		newStates[Province][City].push(entry)
+		this.setState({ states: newStates })
+	}
+// end helper functions
+	
+	sortDataToStates = (data) => {
+		const {
+		provinceInStates, countyInState, addEntryToState, 
+		createCountyInState, createEntryInState 
+		} = this;
+
+		for (const info in data) {
+			const entry = data[info];
+			
+			if (provinceInStates(entry)) {
+				countyInState(entry) ? 
+					addEntryToState(entry) 
+				: 
+					createCountyInState(entry);
+			} else {
+				createEntryInState(entry);
+			}
+		}
+		console.log("finished")
+	}
+
+
+	showHeader = () => {
+		if (this.state.states[""]) {
+			return (
+				<div>
+				Confirmed - {this.state.states[""][""][this.state.states[""][""].length - 1].Confirmed}
+				| COVID-19 |
+				Deaths - {this.state.states[""][""][this.state.states[""][""].length - 1].Deaths}
+				</div>
+			)	
+		} else {
+			return (
+				<div>
+					waiting for data
+				</div>
+			)
+		}
+	}
+
 	showState = () => {
 		console.log(this.state)
 	}
@@ -51,7 +121,7 @@ class App extends Component {
 	    return (
 		<div className="App">
 		    <header className="App-header">
-			header
+				{this.showHeader()}
 		    </header>
 
 		    <main className="App-main">
@@ -72,9 +142,9 @@ class App extends Component {
 			    TEST BUTTON
 			</button>
 
-			{Object.keys(this.state.slugs).map(c => {
+			{Object.keys(this.state.slugs).map((c, i)  => {
 				return (
-				<div>
+				<div key={i}>
 					{this.state.slugs[c].Country} - {this.state.slugs[c].Slug}
 				
 				</div>
