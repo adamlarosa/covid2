@@ -18,6 +18,7 @@ class App extends Component {
 		this.getCountrySlugs();
 	}
 	getCases = async (slug) => {
+		console.log("fetching cases!")
 		await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
 			.then(resp => resp.json())
 			.then(data => {
@@ -37,12 +38,22 @@ class App extends Component {
 	getCountrySlugs = async () => {
 		await fetch(`https://api.covid19api.com/countries`)
 			.then(resp => resp.json())
-			.then(slugs => {
+			.then(json => {
+				let slugs = json.sort(this.compare)
 				this.setState({ slugs })
 			})
 		console.log("Country names downloaded")
 	}
 // end of didMount functions
+compare = (a,b) => {
+    let c = 0;
+    if (a.Country > b.Country) {
+        c = 1
+    } else if (a.Country < b.Country) {
+        c = -1
+    }
+    return c;
+}
 
 // begin helpers
 	provinceInStates = (entry) => {
@@ -158,7 +169,6 @@ class App extends Component {
 						</option>
 					)
 				})}
-
 			</select>
 			<button onClick={() =>this.getCases(this.state.slug)}>select</button>
 			
