@@ -74,7 +74,8 @@ class App extends Component {
 		this.setState({ states: newStates })
 	}
 // end helper functions
-		sortDataToStates = (data) => {
+	sortDataToStates = (data) => {
+		this.setState({ states: {} });
 		const {
 			provinceInStates, countyInState, addEntryToState, 
 			createCountyInState, createEntryInState 
@@ -114,6 +115,11 @@ class App extends Component {
 		}
 	}
 
+
+	selectCountry = (e) => {
+		this.setState({slug: e.target.value})
+	}
+
 	showState = () => {
 		console.log(this.state)
 	}
@@ -144,27 +150,18 @@ class App extends Component {
 
 			<br />
 
-			<select name="countries">
+			<select name="countries" onChange={(e) => this.selectCountry(e)}>
 				{Object.keys(this.state.slugs).map((c, i) => {
 					return (
-						<option value={this.state.slugs[c].Slug}>
+						<option key={i} value={this.state.slugs[c].Slug}>
 							{this.state.slugs[c].Country}
 						</option>
 					)
 				})}
 
 			</select>
+			<button onClick={() =>this.getCases(this.state.slug)}>select</button>
 			
-
-			{Object.keys(this.state.slugs).map((c, i)  => {
-				return (
-				<div key={i}>
-					{this.state.slugs[c].Country} - {this.state.slugs[c].Slug}
-				
-				</div>
-				)
-			})}
-
 		    </main>
 
 		</div>
