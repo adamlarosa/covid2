@@ -39,13 +39,13 @@ class App extends Component {
 		await fetch(`https://api.covid19api.com/countries`)
 			.then(resp => resp.json())
 			.then(json => {
-				let slugs = json.sort(this.compare)
+				let slugs = json.sort(this.compareSlugs)
 				this.setState({ slugs })
 			})
 		console.log("Country names downloaded")
 	}
 // end of didMount functions
-compare = (a,b) => {
+compareSlugs = (a,b) => { // <----------helper for getSlugs
     let c = 0;
     if (a.Country > b.Country) {
         c = 1
@@ -118,11 +118,7 @@ compare = (a,b) => {
 				</div>
 			)	
 		} else {
-			return (
-				<div>
-					waiting for data
-				</div>
-			)
+			return <div>waiting for data</div>
 		}
 	}
 
@@ -154,9 +150,9 @@ compare = (a,b) => {
 			<br/>
 					
 			<button
-			    onClick={ () => console.log("test not set up") }
+			    onClick={ () => console.log(this.state.states) }
 			>
-			    TEST BUTTON
+			    SHOW COUNTRY DATA
 			</button>
 
 			<br />
@@ -171,8 +167,20 @@ compare = (a,b) => {
 				})}
 			</select>
 			<button onClick={() =>this.getCases(this.state.slug)}>select</button>
-			
+
+			<br/>
+
+			<select name="states">
+				{Object.keys(this.state.states).map((s,i) => {
+					if (s.length === 0) 
+						return <option key={i} value={s}>Grand Total</option>
+					else 
+						return <option key={i} value={s}>{s}</option>
+				})}
+			</select>
+
 		    </main>
+
 
 		</div>
 	    );
