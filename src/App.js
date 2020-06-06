@@ -42,6 +42,7 @@ class App extends Component {
 			})
 		console.log("Country names downloaded")
 	}
+// end of didMount functions
 
 // begin helpers
 	provinceInStates = (entry) => {
@@ -73,11 +74,10 @@ class App extends Component {
 		this.setState({ states: newStates })
 	}
 // end helper functions
-	
-	sortDataToStates = (data) => {
+		sortDataToStates = (data) => {
 		const {
-		provinceInStates, countyInState, addEntryToState, 
-		createCountyInState, createEntryInState 
+			provinceInStates, countyInState, addEntryToState, 
+			createCountyInState, createEntryInState 
 		} = this;
 
 		for (const info in data) {
@@ -92,7 +92,7 @@ class App extends Component {
 				createEntryInState(entry);
 			}
 		}
-		console.log("finished")
+		console.log("data sorted by states/county")
 	}
 
 
@@ -100,7 +100,7 @@ class App extends Component {
 		if (this.state.states[""]) {
 			return (
 				<div>
-				Confirmed - {this.state.states[""][""][this.state.states[""][""].length - 1].Confirmed}
+				{this.state.states[""][""][this.state.states[""][""].length - 1].Confirmed} - Confirmed
 				| COVID-19 |
 				Deaths - {this.state.states[""][""][this.state.states[""][""].length - 1].Deaths}
 				</div>
@@ -141,6 +141,20 @@ class App extends Component {
 			>
 			    TEST BUTTON
 			</button>
+
+			<br />
+
+			<select name="countries">
+				{Object.keys(this.state.slugs).map((c, i) => {
+					return (
+						<option value={this.state.slugs[c].Slug}>
+							{this.state.slugs[c].Country}
+						</option>
+					)
+				})}
+
+			</select>
+			
 
 			{Object.keys(this.state.slugs).map((c, i)  => {
 				return (
