@@ -25,6 +25,7 @@ class App extends Component {
 				this.setState({ data });
 			})
 		this.sortDataToStates(this.state.data)
+debugger
 		console.log("download complete")
 	}   
 	getRoutes = async () => {
@@ -171,7 +172,7 @@ compareSlugs = (a,b) => { // <----------helper for getSlugs
 			<br/>
 
 			<select name="states">
-				{Object.keys(this.state.states).map((s,i) => {
+				{Object.keys(this.state.states).sort().map((s,i) => {
 					if (s.length === 0) 
 						return <option key={i} value={s}>Grand Total</option>
 					else 
